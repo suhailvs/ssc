@@ -52,3 +52,11 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+
+log/
+tmp/
+
+osqa.sqlite3
+osqa.wsgi
+settings_local.py
+
