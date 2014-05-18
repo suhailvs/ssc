@@ -12,10 +12,23 @@
         <meta name="google-site-verification" content="{{ settings.GOOGLE_SITEMAP_CODE }}" />
         {% endif %}
         <link rel="shortcut icon" href="{{ settings.APP_FAVICON }}" />
-        <!-- Bootstrap -->
-        <link href="{% media  "/media/bootstrap/css/bootstrap.css" %}" rel="stylesheet" type="text/css" />
-
+        
         <link href="{% media  "/media/style/style.css" %}" rel="stylesheet" type="text/css" />
+
+        <!-- Bootstrap -->
+        <link href="{% media  "/media/bootstrap/css/lumen.css" %}" rel="stylesheet" type="text/css" />
+        
+        <style type="text/css">
+            .nav-tabs {
+                /*background: #d8dbde;
+                border: 0;
+                -moz-border-radius: 3px 3px 0 0;
+                -webkit-border-radius: 3px 3px 0 0;
+                border-radius: 3px 3px 0 0;*/
+                margin-left: 0;
+                }
+        </style>
+
         {% if settings.USE_CUSTOM_CSS|or_preview:request %}
         <link href="{% url "custom_css" %}" rel="stylesheet" type="text/css" />
         {% endif %}

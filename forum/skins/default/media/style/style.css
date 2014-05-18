@@ -381,7 +381,7 @@ blockquote blockquote {
     border-right: 1px solid #CCCCCC;
     float: left;
     font-size: 11px;
-    height: 42px;
+    height: 46px;
     margin: 0 6px 0 0px;
     padding: 8px 2px 0;
     text-align: center;
@@ -440,7 +440,7 @@ blockquote blockquote {
 }
 
 .boxC {
-    background: none repeat scroll 0 0 #E5EBF8;
+    background: none repeat scroll 0 0 #F1F1F1;
     border-color: #EEEEEC #A9ACA5 #BABDB6 #EEEEEC;
     border-style: solid;
     border-width: 1px;
