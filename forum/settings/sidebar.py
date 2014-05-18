@@ -106,3 +106,7 @@ label = _("Lower block rendering mode"),
 help_text = _("How to render your lower block code."),
 widget=Select(choices=RENDER_CHOICES),
 required=False))
+
+SIDEBAR_UPPER_SHOW=False
+SIDEBAR_LOWER_SHOW=False
+SHOW_WELCOME_BOX=False
