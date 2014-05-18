@@ -20,7 +20,7 @@ from forum.utils.decorators import ajax_login_required
 from forum.actions import *
 from forum.modules import decorate
 from forum import settings
-
+from django.db.models import Q
 from decorators import command, CommandException, RefreshPageCommand
 
 class NotEnoughRepPointsException(CommandException):
@@ -574,7 +574,8 @@ def matching_users(request):
 
 def related_questions(request):
     if request.POST and request.POST.get('title', None):
-        can_rank, questions = Question.objects.search(request.POST['title'])
+        keywords=request.POST['title']
+        can_rank, questions = False,Question.objects.filter(Q(title__icontains=keywords) |Q(body__icontains=keywords))#Question.objects.search(request.POST['title'])
 
         if can_rank and isinstance(can_rank, basestring):
             questions = questions.order_by(can_rank)

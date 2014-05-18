@@ -25,7 +25,6 @@ from forum.actions import QuestionViewAction
 from forum.http_responses import HttpResponseUnauthorized
 from forum.feed import RssQuestionFeed, RssAnswerFeed
 from forum.utils.pagination import generate_uri
-
 import decorators
 
 class HottestQuestionsSort(pagination.SortBase):
@@ -267,8 +266,8 @@ def search(request):
 @decorators.render('questions.html')
 def question_search(request, keywords):
     rank_feed = False
-    can_rank, initial = Question.objects.search(keywords)
-
+    can_rank, initial = False,Question.objects.filter(Q(title__icontains=keywords) |Q(body__icontains=keywords))#Question.objects.search(keywords)
+    print (initial,can_rank)
     if can_rank:
         sort_order = None
 
