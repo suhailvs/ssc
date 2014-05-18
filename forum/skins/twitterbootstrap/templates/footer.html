@@ -1,20 +1,33 @@
 {% load extra_tags ui_registry i18n %}
 
+ <style type="text/css">
+ /* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+  text-align: center;
+}
 
-<div>
-    <div class="footerLinks" >
-        {% loadregistry footer_links %}<span class="link-separator"> |</span>{% endloadregistry %}
-    </div>
-    <!--
-  <p>
-     <a href="http://osqa.net" target="_blank" title="OSQA {{ settings.OSQA_VERSION }} ({{ settings.VCS_REVISION }})">
-        powered by OSQA
-     </a>
-  </p>
+.footer-links li{
+  display:inline;
+  padding: 0 2px;
+}
+</style>
+<div id="footer">
+  <div class="container">
+    <ul class="footer-links"><li>{% loadregistry footer_links %}<span class="link-separator"> |</span></li><li>{% endloadregistry %}</li></ul>
+  </div>
 </div>
- <div id="licenseLogo">
-  <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">
-            <img src="{% media  "/media/images/by-sa-88x31.png" %}" title="Creative Commons: Attribution - Share Alike" alt="cc-by-sa" width="88" height="31" />
-  </a>
-  -->
- </div>

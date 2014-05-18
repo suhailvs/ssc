@@ -27,6 +27,9 @@
                 border-radius: 3px 3px 0 0;*/
                 margin-left: 0;
                 }
+                .boxC h3{
+                    font-size: 20px;
+                }
         </style>
 
         {% if settings.USE_CUSTOM_CSS|or_preview:request %}
@@ -116,29 +119,7 @@
             <div class="spacer3"></div>
         </div>
         {% endblock %}
-        {% if settings.USE_CUSTOM_FOOTER|or_preview:request %}
-            {% ifequal settings.CUSTOM_FOOTER_MODE|or_preview:request "above" %}
-                <div id="custom_footer">
-                    {{ settings.CUSTOM_FOOTER|or_preview:request|static_content:settings.CUSTOM_FOOTER_RENDER_MODE }}
-                </div>
-            {% endifequal %}
-            <div id="ground">
-                {% ifequal settings.CUSTOM_FOOTER_MODE|or_preview:request "replace" %}
-                    {{ settings.CUSTOM_FOOTER|or_preview:request|static_content:settings.CUSTOM_FOOTER_RENDER_MODE }}
-                {% else %}
-                    {% include "footer.html" %}
-                {% endifequal %}
-            </div>
-            {% ifequal settings.CUSTOM_FOOTER_MODE|or_preview:request "below" %}
-                <div id="custom_footer">
-                    {{ settings.CUSTOM_FOOTER|or_preview:request|static_content:settings.CUSTOM_FOOTER_RENDER_MODE }}
-                </div>
-            {% endifequal %}
-        {% else %}
-            <div id="ground">
-                {% include "footer.html" %}
-            </div>
-        {% endif %}
+        
         {% block endjs %}
         {% endblock %}
         {% if settings.GOOGLE_ANALYTICS_KEY %}
@@ -155,6 +136,7 @@
             </script>
         {% endif %}
         </div>
+        {% include "footer.html" %}
     </body>
 </html>
 <!-- end template base_content.html -->

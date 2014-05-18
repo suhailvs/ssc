@@ -16,8 +16,8 @@
         
         <ul class="nav navbar-nav">
           {% if request.user.is_active %}          
-          <li class="navbar-text"><span class="label label-default">Reputation:{% get_score_badge request.user %}</span></li>
-          <li><a href="{{request.user.get_profile_url}}">{{request.user.username}}(Profile)</a></li>
+          <!--<li class="navbar-text"><span class="label label-default">Reputation:{% get_score_badge request.user %}</span></li>-->
+          <li><a href="{{request.user.get_profile_url}}">{{request.user.username}} <span class="badge">{% get_score_badge request.user %}</span></a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
           {% else %}
           <li><a href="{% url 'auth_signin' %}">login</a></li>        
