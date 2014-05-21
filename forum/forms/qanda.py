@@ -19,7 +19,7 @@ class TitleField(forms.CharField):
 
         self.required = True
         self.max_length = 255
-        self.widget = forms.TextInput(attrs={'size' : 70, 'autocomplete' : 'off', 'maxlength' : self.max_length})
+        self.widget = forms.TextInput(attrs={'size' : 70, 'autocomplete' : 'off', 'maxlength' : self.max_length,'class':'form-control'})
         self.label  = _('title')
         self.help_text = _('please enter a descriptive title for your question')
         self.initial = ''
@@ -36,7 +36,7 @@ class EditorField(forms.CharField):
     def __init__(self, *args, **kwargs):
         super(EditorField, self).__init__(*args, **kwargs)
 
-        self.widget = forms.Textarea(attrs={'id':'editor'})
+        self.widget = forms.Textarea(attrs={'id':'editor','class':'form-control'})
         self.label  = _('content')
         self.help_text = u''
         self.initial = ''
@@ -46,6 +46,7 @@ class QuestionEditorField(EditorField):
     def __init__(self, *args, **kwargs):
         super(QuestionEditorField, self).__init__(*args, **kwargs)
         self.required = not bool(settings.FORM_EMPTY_QUESTION_BODY)
+
 
 
     def clean(self, value):
@@ -75,7 +76,7 @@ class TagNamesField(forms.CharField):
         super(TagNamesField, self).__init__(*args, **kwargs)
 
         self.required = True
-        self.widget = forms.TextInput(attrs={'size' : 50, 'autocomplete' : 'off'})
+        self.widget = forms.TextInput(attrs={'size' : 50, 'autocomplete' : 'off','class':'form-control'})
         self.max_length = 255
         self.label  = _('tags')
         #self.help_text = _('please use space to separate tags (this enables autocomplete feature)')

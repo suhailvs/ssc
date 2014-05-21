@@ -150,9 +150,9 @@
             {% endif %}
 			
             {% if not request.user.is_authenticated %}                                                                        
-            <input name="ask" type="button" value="{% trans "Login/signup to post your question" %}" class="submit" onclick="submitClicked(event, this.form)"/>
+            <input name="ask" type="button" value="{% trans "Login/signup to post your question" %}" class="btn btn-success" onclick="submitClicked(event, this.form)"/>
 			{% else %}
-            <input name="ask" type="button" value="{% trans "Ask your question" %}" class="submit" onclick="submitClicked(event, this.form)"/>
+            <input name="ask" type="button" value="{% trans "Ask your question" %}" class="btn btn-success" onclick="submitClicked(event, this.form)"/>
             {% endif %}
         </form>
     </div>

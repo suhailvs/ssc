@@ -19,8 +19,9 @@
           <!--<li class="navbar-text"><span class="label label-default">Reputation:{% get_score_badge request.user %}</span></li>-->
           <li><a href="{{request.user.get_profile_url}}">{{request.user.username}} <span class="badge">{% get_score_badge request.user %}</span></a></li>
           <li><a href="{% url 'logout' %}">Logout</a></li>
-          {% else %}
-          <li><a href="{% url 'auth_signin' %}">login</a></li>        
+          {% else %}          
+          <li><a href="{% url 'auth_signin' %}">log in</a></li>
+          <li><a href="{% url 'auth_local_register' %}">sign up</a></li>       
           {% endif %}
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'faq' %}">Faq</a></li>

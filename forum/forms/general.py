@@ -36,7 +36,7 @@ class NextUrlField(forms.CharField):
     def clean(self,value):
         return clean_next(value)
 
-login_form_widget_attrs = { 'class': 'required login' }
+login_form_widget_attrs = { 'class': 'required login form-control' }
 username_re = re.compile(r'^[\-\w\s ]+$', re.UNICODE)
 
 class UserNameField(StrippedNonEmptyCharField):
