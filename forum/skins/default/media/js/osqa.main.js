@@ -755,7 +755,8 @@ function pickedTags(){
     };
 
     var handlePickedTag = function(obj,reason){
-        var tagname = $.trim($(obj).prev().attr('value'));
+        var tagname = $.trim($(obj).parent().prev().attr('value'));
+        if (tagname == '') return;
         var to_target = interestingTags;
         var from_target = ignoredTags;
         var to_tag_container;
