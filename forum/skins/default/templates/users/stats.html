@@ -79,12 +79,12 @@
         <div class="user-stats-table">
             <table>
                 <tr>
-                    <td width="60">
+                    <td width="100">
                         <img style="cursor: default;" src="{% media  "/media/images/vote-arrow-up-on.png" %}" alt="{% trans "thumb up" %}" />
                             <span title="{% trans "user has voted up this many times" %}" class="vote-count">{{up_votes}}</span>
 
                     </td>
-                    <td width="60">
+                    <td width="100">
                         <img style="cursor: default;" src="{% media  "/media/images/vote-arrow-down-on.png" %}" alt="{% trans "thumb down" %}" />
                             <span title="{% trans "user voted down this many times" %}" class="vote-count">{{down_votes}}</span>
 
@@ -105,7 +105,7 @@
         <div class="user-stats-table">
             <table class="tags">
                 <tr style="vertical-align: top;">
-                    <td valign="top" style="padding-right: 20px;">
+                    <td width="180" style="padding-right: 20px;">
                         {% for tag in user_tags%}
                         <a rel="tag" 
                             class="tag-link-{{ tag.name }}"

@@ -16,7 +16,7 @@
         <link href="{% media  "/media/style/style.css" %}" rel="stylesheet" type="text/css" />
 
         <!-- Bootstrap -->
-        <link href="{% media  "/media/bootstrap/css/cosmo.css" %}" rel="stylesheet" type="text/css" /><!--lumen,bootstrap,readable,ubuntu,simplex-->
+        <link href="{% media  "/media/bootstrap/css/lumen.css" %}" rel="stylesheet" type="text/css" /><!--lumen,bootstrap,readable,ubuntu,simplex-->
         
         <style type="text/css">
             .nav-tabs {
@@ -26,10 +26,21 @@
                 -webkit-border-radius: 3px 3px 0 0;
                 border-radius: 3px 3px 0 0;*/
                 margin-left: 0;
-                }
-                .boxC h3{
+            }
+            .boxC h3{
                     font-size: 20px;
-                }
+            }
+            .answer-votes {
+                height: 30px;
+                width: 40px;
+            }
+            #mainbar-full > h2, .userSection > h2 {
+                border-bottom: 1px solid #ccc;
+                font-size:18px;
+            }
+            a:hover {
+                text-decoration: none;
+            }
         </style>
 
         {% if settings.USE_CUSTOM_CSS|or_preview:request %}
