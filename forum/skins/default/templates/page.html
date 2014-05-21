@@ -16,7 +16,7 @@
     {% block sidebar %}
         {% sidebar_upper %}
         {% if page.extra.sidebar %}
-            {% if page.extra.sidebar_wrap %}<div class="boxC"><div class="body">{% endif %}
+            {% if page.extra.sidebar_wrap %}<div class="well"><div class="body">{% endif %}
                 {{ sidebar }}
             {% if page.extra.sidebar_wrap %}</div></div>{% endif %}
         {% endif %}

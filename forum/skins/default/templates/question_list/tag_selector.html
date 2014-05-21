@@ -3,7 +3,7 @@
 
 {% if show_interesting_tags %}
 {% if user_authenticated %}
-<div id="tagSelector" class="boxC">
+<div id="tagSelector" class="well">
 	<h3 class="subtitle">{% trans "Interesting tags" %}</h3>
     <div class="tags interesting marked-tags">
     {% for tag_name in interesting_tag_names %}

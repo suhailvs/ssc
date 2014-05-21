@@ -278,7 +278,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div class="boxC" id="subscription_box">
+<div class="well" id="subscription_box">
     {% include "subscription_status.html" %}
 </div>
 
@@ -287,7 +287,7 @@
 {% sidebar_upper %}
 
 {% cache 60 questions_tags settings.APP_URL question.id %}
-<div class="boxC">
+<div class="well">
     <p>
         {% trans "Question tags" %}:
     </p>
@@ -311,7 +311,7 @@
 </div>
 {% endcache %}
 {% sidebar_lower %}
-<div class="boxC">
+<div class="well">
     <h3 class="subtitle">{% trans "Related questions" %}</h3>
     <div class="questions-related">
 
