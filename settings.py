@@ -53,7 +53,9 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # User settings
-from settings_local import *
+if 'OPENSHIFT_REPO_DIR' in os.environ:
+    from settings_openshift import *
+else:from settings_local import *
 
 template_loaders = (
     'django.template.loaders.filesystem.Loader',

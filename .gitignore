@@ -59,4 +59,4 @@ tmp/
 osqa.sqlite3
 osqa.wsgi
 settings_local.py
-
+django.osqa.log

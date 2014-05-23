@@ -15,7 +15,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'default',
-            'filename': os.path.join(SITE_SRC_ROOT, 'log', LOG_FILENAME),
+            'filename': os.path.join(SITE_SRC_ROOT, LOG_FILENAME),
         },
     },
     'loggers' : {
