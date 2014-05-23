@@ -1,11 +1,13 @@
-import os
-import sys
-sys.path.append('/home/suhail/github/keralaentrance')
-#sys.path.append('/path/to_dir_above/osqa')
-# The first part of this module name should be identical to the directory name
-# of the OSQA source.  For instance, if the full path to OSQA is
-# /home/osqa/osqa-server, then the DJANGO_SETTINGS_MODULE should have a value
-# of 'osqa-server.settings'.
+#!/usr/bin/python
+import os, sys
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
+sys.path.append(os.environ['OPENSHIFT_REPO_DIR'])
+
+virtenv = os.path.join(os.environ['OPENSHIFT_PYTHON_DIR'],'virtenv')
+virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+try:execfile(virtualenv, dict(__file__=virtualenv))
+except IOError:pass
+
+from django.core.handlers import wsgi
+application = wsgi.WSGIHandler()
