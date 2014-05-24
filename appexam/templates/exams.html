@@ -3,8 +3,20 @@
 <div class="row">
   <div class="col-md-9" style="border:1px solid #ccc; padding:20px;">  		
   	<p>Question <span class="questionnumber"></span></p><hr>
-	<div class="lead question-box"></div>
-	<div class="bs-docs-grid" id="options-box"></div><!-- /bs-docs-grid -->
+	<div class="question-box"></div>
+	<div id="options-box">	
+		{% for i in 'ABCD' %}
+		<div class="optthumb" id="choice{{forloop.counter}}">
+			<input type="radio" name="optgroup" value="{{forloop.counter}}">
+			Choice ({{ i }})<br>
+		</div>
+		{% endfor %}
+		<!--
+		<input type="radio" name="optgroup" value="1">Choice (B)<br>
+		<input type="radio" name="optgroup" value="2">Choice (C)<br>
+		<input type="radio" name="optgroup" value="3">Choice (D)<br>
+		 /bs-docs-grid -->
+	</div>
 	<br >
 	<button class="btn btn-success" id="btn-next"> Next →</button>
 	<button class="btn btn-danger pull-right" id="btn-submit">Submit Exam</button>	
@@ -17,3 +29,78 @@
 	<div class="well" style="padding:5px">{% buttons_tag min_left questions %}
   </div>
 </div>
+<script src="{% media "/media/bootstrap/js/jquery.min.js" %}"></script>
+<script>
+function setQnQuestChoice(qn){
+	//Save the answer, then show New Question	
+	var $curquest=$("#btn-nav"+qn);	
+	$(".btnnav").removeClass('btn-primary'); //remove btn-primary from all nav buttons
+	$curquest.removeClass('btn-success');
+	$curquest.addClass('btn-primary');//add btn-primary to current button
+
+	//if not first question save previous question's answer temporarly
+	var prev_quest = $('.questionnumber').text();
+	if (prev_quest != ''){
+		var str_optSel=$('input[name=optgroup]').val();
+		alert(str_optSel,prev_quest);
+		$("#btn-nav"+prev_quest).attr('optselected',str_optSel);
+		$("#btn-nav"+prev_quest).addClass('btn-success');		
+	}
+	var ajaxdata={qpk:$curquest.data("qpk")};
+	$.ajax({
+		//myquiz.views.get_choice_question
+		url:'{% url "get_question" %}',
+		data:ajaxdata,
+		success:function(data){
+			//change question number,question and type
+			$('.questionnumber').text(qn);
+			$('.question-box').html(data.question);
+			var qtype=$("#btn-nav"+qn).data('qtype');
+			
+			//the temporary saved answer
+			var opt_selected=$("#btn-nav"+qn).attr('optselected');
+			if (opt_selected == '') opt_selected='0';
+			
+			//check the radio button
+			$('.optthumb').removeClass('thumbnail');
+			$('#choice'+opt_selected).addClass('thumbnail');
+			$('#choice'+opt_selected).children('input').attr('checked', 'checked');
+		}
+	});	
+}
+
+$(".btnnav").click(function(){	
+	if ($('.questionnumber').text()==$(this).text()){
+		//alert("this is curquest");
+		return false
+	}
+	//alert('someother question. going to chagne buttoncolor');		
+	setQnQuestChoice($(this).text());
+});
+
+$("#btn-next").click(function() {
+	var curqn= $('.questionnumber').text();		
+	if (curqn==$('.nquests').text()){			
+		setQnQuestChoice(1);
+	}else{
+		var nextqn = parseInt(curqn) + 1;			
+		setQnQuestChoice(nextqn);
+	}
+});
+
+$(document).on('click', '.optthumb', function(){
+	if ($(this).children('input').length > 0 ) {
+		$(".optthumb").removeClass('thumbnail');
+		$(".optthumb input:radio[name=optgroup]:checked").parent('.optthumb').addClass('thumbnail');
+    }else{
+    	$(this).toggleClass('thumbnail');
+    }
+});
+
+
+$(document).ready(function(){
+	//var min_left=$("span.testtime").text();	
+	//starttimer(min_left);
+	setQnQuestChoice(1);
+});
+</script>
