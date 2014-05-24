@@ -1,0 +1,19 @@
+{% load q_extras extra_tags %}
+<link href="{% media  "/media/bootstrap/css/lumen.css" %}" rel="stylesheet" type="text/css" /><!--lumen,bootstrap,readable,ubuntu,simplex-->
+<div class="row">
+  <div class="col-md-9" style="border:1px solid #ccc; padding:20px;">  		
+  	<p>Question <span class="questionnumber"></span></p><hr>
+	<div class="lead question-box"></div>
+	<div class="bs-docs-grid" id="options-box"></div><!-- /bs-docs-grid -->
+	<br >
+	<button class="btn btn-success" id="btn-next"> Next →</button>
+	<button class="btn btn-danger pull-right" id="btn-submit">Submit Exam</button>	
+  </div>
+  <div class="col-md-3">
+  	<div class="timer-box">
+		Time Left: <span class="testtime">{{ min_left }}</span> 
+		Questions: <span class="nquests">{{ min_left }}</span>
+	</div>
+	<div class="well" style="padding:5px">{% buttons_tag min_left questions %}
+  </div>
+</div>
