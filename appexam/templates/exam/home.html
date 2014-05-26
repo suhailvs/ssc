@@ -1,0 +1,113 @@
+{% extends 'exam/exam_base.html' %}
+{% load q_extras extra_tags %}
+{% block content %}
+<div class="container">
+<h3>Question: <small><span id="question-no"></span></small>/
+	<small><span class="nquests">{{ min_left }}</span></small>
+</h3>
+	<div class="row">
+        <div class="col-xs-9">            
+            <div class="well" style="background:#fff">
+                <div id="questionbox"></div>
+                <div class="btn-group" id="optgroup"> 
+                	{% for i in 'ABCD' %}
+					 <a class="btn btn-primary" id="choice{{forloop.counter}}" data-opt="{{forloop.counter}}" href="javascript:void(0)">
+					 <!-- please vist http://stackoverflow.com/questions/134845 for more about void(0)
+					 -->
+					 	<span class="fui-checkbox-unchecked"></span> {{i}}</a>
+					{% endfor %}
+					  <!-- an active button 
+					 <a class="btn btn-primary active" href="#">
+					 	<span class="fui-checkbox-checked"></span> D</a>-->
+				</div>
+            </div>
+        </div>
+        <div class="col-xs-3 well">
+        	<div class="timer-box">
+        		Time Left: <span class="testtime">{{ min_left }}</span>
+        	</div>
+        	{% buttons_tag min_left questions %}
+        </div>        
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+function set_opt(opt_selected){
+	//uncheck all radio buttons
+	$('#optgroup a').removeClass('active');
+	$('#optgroup a span').removeClass('fui-checkbox-checked').addClass('fui-checkbox-unchecked');
+	
+	if (opt_selected){
+		//check the radio button
+		$('#optgroup #choice'+opt_selected).addClass('active');
+		$('#optgroup #choice'+opt_selected).children('span')
+			.removeClass('fui-checkbox-unchecked').addClass('fui-checkbox-checked');
+	}
+}
+
+function setQnQuestChoice(qn){
+	//Save the answer, then show New Question	
+	var $curquest=$("#btn-nav"+qn);	
+	$(".btnnav").removeClass('btn-primary'); //remove btn-primary from all nav buttons
+	$curquest.removeClass('btn-success');
+	$curquest.addClass('btn-primary');//add btn-primary to current button
+
+	//if not first question save previous question's answer temporarly
+	var prev_quest = $('#question-no').text();
+	if (prev_quest != ''){
+		var str_optSel=$('#optgroup a.active').data('opt');
+		//alert('selected option: '+str_optSel+'--- Question'+prev_quest);
+		if (str_optSel!== undefined){
+			//save choice in the button
+			$("#btn-nav"+prev_quest).data("opt",str_optSel);		
+			$("#btn-nav"+prev_quest).addClass('btn-success');
+		}		
+	}
+	var ajaxdata={qpk:$curquest.data("qpk")};
+	$.ajax({
+		//myquiz.views.get_choice_question
+		url:'{% url "get_question" %}',
+		data:ajaxdata,
+		success:function(data){
+			//change question number,question
+			$('#question-no').text(qn);
+			$('#questionbox').html(data.question);
+
+			//get the temporary saved answer 
+			//for no option selected, data-opt = 0. see q_extras.py for more
+			set_opt($("#btn-nav"+qn).data("opt"));
+			//var sel_opt=$("#btn-nav"+qn).data("opt");			
+			//alert('curr option-selected for this button:',sel_opt)
+			//if (sel_opt) set_opt(sel_opt);
+			//else alert('no options selected');
+		}
+	});	
+}
+
+$("#optgroup a").click(function(){
+	set_opt($(this).data('opt'));
+});
+
+$(".btnnav").click(function(){	
+	if ($('#question-no').text()==$(this).text()) return false;//skip if same question	
+	setQnQuestChoice($(this).text());
+});
+
+$("#btn-next").click(function() {
+	var curqn= $('#question-no').text();		
+	if (curqn==$('.nquests').text()){			
+		setQnQuestChoice(1);
+	}else{
+		//var nextqn = parseInt(curqn) + 1;			
+		setQnQuestChoice(parseInt(curqn) + 1);
+	}
+});
+
+$(document).ready(function(){
+	//var min_left=$("span.testtime").text();	
+	//starttimer(min_left);
+	setQnQuestChoice(1);
+});
+</script>
+{% endblock %}

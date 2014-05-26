@@ -19,7 +19,7 @@ def startquiz(request,tag):
 		quest_pks=quest_pks[:noQs]
 	else:noQs=len(quest_pks)
 	d={'questions':quest_pks,'min_left':noQs}
-	return render(request,'exams.html',d)
+	return render(request,'exam/home.html',d)
 
 def get_question(request):
 	#myjs.js -> setQnQuestChoice -> /ajax/quest/

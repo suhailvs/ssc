@@ -9,7 +9,7 @@ def buttons_tag(n,quests):
 	lastrow=n%5
 	str_outp=""
 	str_btn='''<button class="btn btn-nav-quests btnnav" style="width:40px;" 
-			id="btn-nav{0}" data-qpk="{1}" optselected="">{0}</button>'''
+			id="btn-nav{0}" data-qpk="{1}" data-opt="0">{0}</button>'''
 
 	for i in range(nrows):
 		str_outp+='<div class="btn-group">'
