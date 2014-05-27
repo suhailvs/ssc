@@ -2,6 +2,9 @@
 {% load q_extras extra_tags %}
 {% block extrahead %}
 <link href="{% media "/media/timecirlces/TimeCircles.css" %}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	body{ background: #95A5A6}
+</style>
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -59,6 +62,8 @@
 
 {% endblock %}
 {% block javascript %}
+<!-- MathJar CDN(please visit: jsfiddle.net/sgJ59) -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script src="{% media "/media/timecirlces/TimeCircles.js" %}"></script>
 <script>
 function set_opt(opt_selected){
@@ -126,8 +131,7 @@ function SubmitQuiz(){
 			total_questions: $('.nquests').text()
 			}
 		}).done(function(d) {
-		//document.location.assign('/quiz/?scorepk='+score);
-		alert(d);	  	
+		document.location.assign('{% url "exam_result" %}');		
 	});//end of ajax
 }
 

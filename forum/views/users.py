@@ -22,6 +22,7 @@ from forum.modules import ui
 from forum.utils import pagination
 from forum.views.readers import QuestionListPaginatorContext, AnswerPaginatorContext
 from forum.settings import ONLINE_USERS
+from appexam.models import Score
 
 from django.contrib import messages
 
@@ -342,7 +343,7 @@ def user_view(template, tab_name, tab_title, tab_description, private=False, tab
 def user_profile(request, user, **kwargs):
     questions = Question.objects.filter_state(deleted=False).filter(author=user).order_by('-added_at')
     answers = Answer.objects.filter_state(deleted=False).filter(author=user).order_by('-added_at')
-
+    
     # Check whether the passed slug matches the one for the user object
     slug = kwargs['slug']
     if slug != slugify(smart_unicode(user.username)):
@@ -373,6 +374,7 @@ def user_profile(request, user, **kwargs):
     "user_tags" : user_tags[:50],
     "awards": awards,
     "total_awards" : len(awards),
+    "scores": Score.objects.filter(user=user),
     })
     
 @user_view('users/recent.html', 'recent', _('recent activity'), _('recent user activity'))

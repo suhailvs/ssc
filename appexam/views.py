@@ -12,7 +12,7 @@ from appexam.models import OptCorrect,Score
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-@login_required
+@login_required(login_url='/account/signin/')
 def startquiz(request,tag):
 	noQs=10
 	tag = Tag.active.get(name=unquote(tag))    
@@ -43,7 +43,7 @@ def save_opt(request):
 	obj.save()
 	return HttpResponse('Save in BACKEND successfully. --> quest: {opt.question}, option: {opt.opt}'.format(opt=obj))
 
-@login_required
+@login_required(login_url='/account/signin/')
 def submit_exam(request):
 	if 'tag' in request.GET:		
 		quests= json.loads(request.GET['questions'])
@@ -53,6 +53,11 @@ def submit_exam(request):
 			total_questions=request.GET['total_questions'],
 			total_correct=c,
 			total_wrong=w
-			).save()
-		print s	
-		return HttpResponse('correct:{0},wrong:{1}'.format(c,w))
+			)
+		s.save()
+		return HttpResponse(s.pk)
+		
+@login_required(login_url='/account/signin/')
+def exam_result(request):
+	scores=Score.objects.filter(user=request.user)
+	return render(request,'exam/result.html',{'scores':scores})

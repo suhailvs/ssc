@@ -30,3 +30,7 @@ class Score(models.Model):
 	total_wrong	= models.IntegerField(max_length=3,default=0)	
 	def __unicode__(self):
 		return u"%s took the quiz: %s" % (self.user, self.tag)
+
+	@property
+	def unattempted(self):
+		return self.total_questions - self.total_correct - self.total_wrong
