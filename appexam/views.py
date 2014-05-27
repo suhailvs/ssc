@@ -45,10 +45,14 @@ def save_opt(request):
 
 @login_required
 def submit_exam(request):
-	if 'tag' in request.GET:
+	if 'tag' in request.GET:		
 		quests= json.loads(request.GET['questions'])
-		for key,value in quests.items():
-			#key --> question_id, value --> selected option
-			if not value:continue
-			print key,value
-		return HttpResponse('success')
+		c,w = OptCorrect.objects.check_exam(quests)
+		s=Score(user=request.user,
+			tag=request.GET['tag'],
+			total_questions=request.GET['total_questions'],
+			total_correct=c,
+			total_wrong=w
+			).save()
+		print s	
+		return HttpResponse('correct:{0},wrong:{1}'.format(c,w))
