@@ -8,6 +8,7 @@ from urllib import unquote
 from django.http import HttpResponse
 from django.db import connection
 
+from appexam.models import OptCorrect
 # Create your views here.
 def startquiz(request,tag):
 	noQs=10
@@ -30,3 +31,9 @@ def get_question(request):
 	n={'question':q[0]}	
 	cursor.close()
 	return HttpResponse(json.dumps(n), mimetype="application/json")
+
+def save_opt(request):
+	obj, created = OptCorrect.objects.get_or_create(question=request.GET['question'])
+	obj.opt=int(request.GET['opt'])
+	obj.save()
+	return HttpResponse('Save in BACKEND successfully. --> quest: {opt.question}, option: {opt.opt}'.format(opt=obj))

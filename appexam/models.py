@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Correct option for question
 class OptCorrect(models.Model):
 	question=models.IntegerField(max_length=10,unique=True)
-	correct_opt = models.IntegerField(max_length=1,default=0)
+	opt = models.IntegerField(max_length=1,default=0)
 
 #"""Answers written by user"""
 class Score(models.Model):

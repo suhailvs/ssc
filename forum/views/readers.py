@@ -21,6 +21,7 @@ from forum.utils.diff import textDiff as htmldiff
 from forum.utils import pagination
 from forum.forms import *
 from forum.models import *
+from appexam.models import OptCorrect
 from forum.actions import QuestionViewAction
 from forum.http_responses import HttpResponseUnauthorized
 from forum.feed import RssQuestionFeed, RssAnswerFeed
@@ -415,7 +416,8 @@ def question(request, id, slug='', answer=None):
     "similar_questions" : question.get_related_questions(),
     "subscription": subscription,
     "embed_youtube_videos" : settings.EMBED_YOUTUBE_VIDEOS,
-    "focused_answer_id" : focused_answer_id
+    "focused_answer_id" : focused_answer_id,
+    "correctopt":OptCorrect.objects.filter(question=question.id),
     })
 
 

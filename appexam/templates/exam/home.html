@@ -76,11 +76,7 @@ function setQnQuestChoice(qn){
 
 			//get the temporary saved answer 
 			//for no option selected, data-opt = 0. see q_extras.py for more
-			set_opt($("#btn-nav"+qn).data("opt"));
-			//var sel_opt=$("#btn-nav"+qn).data("opt");			
-			//alert('curr option-selected for this button:',sel_opt)
-			//if (sel_opt) set_opt(sel_opt);
-			//else alert('no options selected');
+			set_opt($("#btn-nav"+qn).data("opt"));			
 		}
 	});	
 }
@@ -90,18 +86,17 @@ $("#optgroup a").click(function(){
 });
 
 $(".btnnav").click(function(){	
-	if ($('#question-no').text()==$(this).text()) return false;//skip if same question	
-	setQnQuestChoice($(this).text());
+	//skip if same question	
+	if ($('#question-no').text() != $(this).text())
+		setQnQuestChoice($(this).text());	
 });
 
 $("#btn-next").click(function() {
-	var curqn= $('#question-no').text();		
-	if (curqn==$('.nquests').text()){			
-		setQnQuestChoice(1);
-	}else{
-		//var nextqn = parseInt(curqn) + 1;			
-		setQnQuestChoice(parseInt(curqn) + 1);
-	}
+	var curqn = $('#question-no').text();
+	//if previous question is last, then curqn = first quest.		
+	if (curqn == $('.nquests').text()) curqn=1;
+	else curqn++;
+	setQnQuestChoice(curqn);	
 });
 
 $(document).ready(function(){

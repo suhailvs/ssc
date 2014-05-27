@@ -78,6 +78,8 @@
             }
         }
         window.addEventListener('beforeunload', beforeUnload, true);
+        
+
         </script>
         <noscript>
             <style>
@@ -282,6 +284,19 @@
     {% include "subscription_status.html" %}
 </div>
 
+<div class="well">
+    <strong>{% trans "Correct Option" %}:</strong>
+    <div class="input-group">      
+      <select class="form-control" id="opt-correctopt">      
+      {% for i in '-ABCD' %}
+          <option value="{{forloop.counter0}}"{% ifequal forloop.counter0 correctopt.0.opt %} selected{% endifequal %}>Choice {{i}}</option>
+      {% endfor %}
+      </select>
+      <span class="input-group-btn">
+        <button class="btn btn-default" id="btn-correctopt" data-qid="{{question.id}}" type="button">Save!</button>
+      </span>
+    </div>
+</div>
 {% markdown_help %}
 
 {% sidebar_upper %}
@@ -327,5 +342,14 @@
 {% endblock %}
 
 {% block endjs %}
+<script type="text/javascript">    
+    $("#btn-correctopt").click(function(){            
+        var qid= $(this).data('qid');
+        $.ajax({
+            url:'{% url "save_correctopt" %}',
+            data:{question:qid,opt:$('select#opt-correctopt').val()}
+            }).done(function(d) {alert(d);console.log(d)});
+        });
+</script>
 {% endblock %}
 <!-- end question.html -->
