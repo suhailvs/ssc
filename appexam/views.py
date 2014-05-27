@@ -8,8 +8,11 @@ from urllib import unquote
 from django.http import HttpResponse
 from django.db import connection
 
-from appexam.models import OptCorrect
+from appexam.models import OptCorrect,Score
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+@login_required
 def startquiz(request,tag):
 	noQs=10
 	tag = Tag.active.get(name=unquote(tag))    
@@ -19,7 +22,9 @@ def startquiz(request,tag):
 		random.shuffle(quest_pks)
 		quest_pks=quest_pks[:noQs]
 	else:noQs=len(quest_pks)
-	d={'questions':quest_pks,'min_left':noQs}
+
+	cols=["#1ABC9C","#16A085","#2ECC71","#27AE60","#3498DB","#2980B9","#9B59B6","#8E44AD","#34495E","#2C3E50","#F1C40F","#F39C12","#E67E22","#D35400","#E74C3C","#C0392B","#ECF0F1","#BDC3C7","#95A5A6","#7F8C8D"]
+	d={'questions':quest_pks,'min_left':noQs,'colors':cols,'tag':tag.name}
 	return render(request,'exam/home.html',d)
 
 def get_question(request):
@@ -37,3 +42,13 @@ def save_opt(request):
 	obj.opt=int(request.GET['opt'])
 	obj.save()
 	return HttpResponse('Save in BACKEND successfully. --> quest: {opt.question}, option: {opt.opt}'.format(opt=obj))
+
+@login_required
+def submit_exam(request):
+	if 'tag' in request.GET:
+		quests= json.loads(request.GET['questions'])
+		for key,value in quests.items():
+			#key --> question_id, value --> selected option
+			if not value:continue
+			print key,value
+		return HttpResponse('success')

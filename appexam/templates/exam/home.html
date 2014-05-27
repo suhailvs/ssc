@@ -1,37 +1,65 @@
 {% extends 'exam/exam_base.html' %}
 {% load q_extras extra_tags %}
+{% block extrahead %}
+<link href="{% media "/media/timecirlces/TimeCircles.css" %}" rel="stylesheet" type="text/css" />
+{% endblock %}
 {% block content %}
 <div class="container">
-<h3>Question: <small><span id="question-no"></span></small>/
-	<small><span class="nquests">{{ min_left }}</span></small>
-</h3>
+	<div class="row">        
+        <div class="col-xs-6">
+          <h4>Tag :<span class="label label-default" id="cur_tag">{{tag}}</span>
+          Question: 
+          	<span class="label label-default">
+          		<span id="question-no"></span>/
+				<span class="nquests">{{ min_left }}</span>
+			</span>
+		  </h4>
+        </div>
+        <div class="col-xs-6">
+        	<a href="{% url 'index' %}" class="btn btn-inverse"><span class="fui-cross"></span> Home</a>
+          	<a href="javascript:void(0)" id="btn-submit" class="btn btn-danger"><span class="fui-check"></span> Submit Answers</a>
+        </div>
+        
+     </div>
 	<div class="row">
         <div class="col-xs-9">            
             <div class="well" style="background:#fff">
-                <div id="questionbox"></div>
-                <div class="btn-group" id="optgroup"> 
+            	<div class="btn-group" id="optgroup" style="padding-bottom:20px;"> 
                 	{% for i in 'ABCD' %}
 					 <a class="btn btn-primary" id="choice{{forloop.counter}}" data-opt="{{forloop.counter}}" href="javascript:void(0)">
 					 <!-- please vist http://stackoverflow.com/questions/134845 for more about void(0)
 					 -->
 					 	<span class="fui-checkbox-unchecked"></span> {{i}}</a>
-					{% endfor %}
-					  <!-- an active button 
-					 <a class="btn btn-primary active" href="#">
-					 	<span class="fui-checkbox-checked"></span> D</a>-->
-				</div>
+					{% endfor %}					 
+				</div>				
+                <div id="questionbox"></div>                
             </div>
         </div>
-        <div class="col-xs-3 well">
-        	<div class="timer-box">
-        		Time Left: <span class="testtime">{{ min_left }}</span>
+        <div class="col-xs-3">  
+        	<div class="well"> 
+	        	<div class="btn-group" style="padding-bottom:10px">
+	        		<a class="btn btn-inverse previous btn-nextprev" href="javascript:void(0)"><span class="fui-arrow-left"></span><span> Previous</span></a>
+	        		<a class="btn btn-inverse next btn-nextprev" href="javascript:void(0)"><span>Next </span><span class="fui-arrow-right"></span></a>									 
+				</div>      	
+        	{% buttons_tag min_left questions %}        	
         	</div>
-        	{% buttons_tag min_left questions %}
+        	<h5><span class="label label-default">Time Left</span></h5>
+        	<div id="CountDownTimer" data-timer="{% widthratio min_left 1 60 %}"></div>
         </div>        
     </div>
+
+    <div class="pagination">
+    	<ul>
+    	{% for i in colors %}
+    		<li><a href="javascript:void(0)" data-bg="{{i}}">{{forloop.counter}}</a></li>
+    	{% endfor %}
+    	</ul>
+	</div>
 </div>
+
 {% endblock %}
 {% block javascript %}
+<script src="{% media "/media/timecirlces/TimeCircles.js" %}"></script>
 <script>
 function set_opt(opt_selected){
 	//uncheck all radio buttons
@@ -46,8 +74,8 @@ function set_opt(opt_selected){
 	}
 }
 
-function setQnQuestChoice(qn){
-	//Save the answer, then show New Question	
+//Save the answer temporarily, then show New Question
+function setQnQuestChoice(qn){		
 	var $curquest=$("#btn-nav"+qn);	
 	$(".btnnav").removeClass('btn-primary'); //remove btn-primary from all nav buttons
 	$curquest.removeClass('btn-success');
@@ -81,6 +109,28 @@ function setQnQuestChoice(qn){
 	});	
 }
 
+// SUBMIT ANSWERS BUTTON CLICK
+// save the answers permanantley
+//===============================================
+function SubmitQuiz(){
+	var quests=new Object;
+	var tag= $("#cur_tag").text();
+	$(".btnnav").each(function() {		
+		quests[$(this).data('qpk')]=$(this).data('opt');		
+	});
+	$.ajax({
+		url:'{% url "submit_exam" %}',
+		data:{
+			questions:JSON.stringify(quests),
+			tag:$("#cur_tag").text(),
+			total_questions: $('.nquests').text()
+			}
+		}).done(function(d) {
+		//document.location.assign('/quiz/?scorepk='+score);
+		alert(d);	  	
+	});//end of ajax
+}
+
 $("#optgroup a").click(function(){
 	set_opt($(this).data('opt'));
 });
@@ -91,18 +141,35 @@ $(".btnnav").click(function(){
 		setQnQuestChoice($(this).text());	
 });
 
-$("#btn-next").click(function() {
+$(".btn-nextprev").click(function() {
 	var curqn = $('#question-no').text();
-	//if previous question is last, then curqn = first quest.		
-	if (curqn == $('.nquests').text()) curqn=1;
-	else curqn++;
+	if ($(this).hasClass('previous')){
+		if (curqn == 1) curqn = $('.nquests').text();
+		else curqn--;
+	}else if ($(this).hasClass('next')){
+		//if previous question is last, then curqn = first quest.		
+		if (curqn == $('.nquests').text()) curqn=1;
+		else curqn++;
+	}
 	setQnQuestChoice(curqn);	
 });
 
-$(document).ready(function(){
-	//var min_left=$("span.testtime").text();	
-	//starttimer(min_left);
+$('.pagination a').click(function () {
+    $('body').css('background-color', $(this).data('bg'));
+});
+
+$("#btn-submit").click(function(){
+	//set last time selected question in the btn-nav	
+	var curquest=$("#question-no").text();
+	var curopt=$('#optgroup a.active').data('opt');
+	$("#btn-nav"+curquest).data("opt",curopt);
+	SubmitQuiz();
+})
+$(document).ready(function(){	
 	setQnQuestChoice(1);
+	$("#CountDownTimer").TimeCircles({ 
+		time: { Days: { show: false }, Hours: { show: false } }
+	});
 });
 </script>
 {% endblock %}
