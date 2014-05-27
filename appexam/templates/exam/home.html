@@ -47,7 +47,7 @@
         	{% buttons_tag min_left questions %}        	
         	</div>
         	<h5><span class="label label-default">Time Left</span></h5>
-        	<div id="CountDownTimer" data-timer="{% widthratio min_left 1 60 %}"></div>
+        	<div id="CountDownTimer" style="height:200px" data-timer="{% widthratio min_left 1 60 %}"></div>
         </div>        
     </div>
 
@@ -62,10 +62,12 @@
 
 {% endblock %}
 {% block javascript %}
+
+<script src="{% media "/media/timecirlces/TimeCircles.js" %}"></script>
 <!-- MathJar CDN(please visit: jsfiddle.net/sgJ59) -->
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-<script src="{% media "/media/timecirlces/TimeCircles.js" %}"></script>
 <script>
+
 function set_opt(opt_selected){
 	//uncheck all radio buttons
 	$('#optgroup a').removeClass('active');
@@ -109,7 +111,8 @@ function setQnQuestChoice(qn){
 
 			//get the temporary saved answer 
 			//for no option selected, data-opt = 0. see q_extras.py for more
-			set_opt($("#btn-nav"+qn).data("opt"));			
+			set_opt($("#btn-nav"+qn).data("opt"));	
+			MathJax.Hub.Typeset();		
 		}
 	});	
 }
@@ -118,6 +121,11 @@ function setQnQuestChoice(qn){
 // save the answers permanantley
 //===============================================
 function SubmitQuiz(){
+	//set last time selected question in the btn-nav	
+	var curquest=$("#question-no").text();
+	var curopt=$('#optgroup a.active').data('opt');
+	$("#btn-nav"+curquest).data("opt",curopt);
+
 	var quests=new Object;
 	var tag= $("#cur_tag").text();
 	$(".btnnav").each(function() {		
@@ -162,18 +170,18 @@ $('.pagination a').click(function () {
     $('body').css('background-color', $(this).data('bg'));
 });
 
-$("#btn-submit").click(function(){
-	//set last time selected question in the btn-nav	
-	var curquest=$("#question-no").text();
-	var curopt=$('#optgroup a.active').data('opt');
-	$("#btn-nav"+curquest).data("opt",curopt);
+$("#btn-submit").click(function(){	
 	SubmitQuiz();
 })
 $(document).ready(function(){	
 	setQnQuestChoice(1);
 	$("#CountDownTimer").TimeCircles({ 
-		time: { Days: { show: false }, Hours: { show: false } }
-	});
+		time: { Days: { show: false }, Hours: { show: false } },
+		count_past_zero: false
+	}).addListener(function(unit,value,total) { 
+        if (total == 0){SubmitQuiz()}
+    });
+	MathJax.Hub.Configured();
 });
 </script>
 {% endblock %}

@@ -59,5 +59,5 @@ def submit_exam(request):
 		
 @login_required(login_url='/account/signin/')
 def exam_result(request):
-	scores=Score.objects.filter(user=request.user)
+	scores=Score.objects.filter(user=request.user).order_by("-started_time")
 	return render(request,'exam/result.html',{'scores':scores})

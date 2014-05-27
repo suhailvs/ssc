@@ -154,7 +154,7 @@
             </table>
         </div>
 
-
+        {% if scores %}        
         <h2>Exams Attended</h2>        
         <div class="user-stats-table">
             <table class="table table-striped table-hover ">
@@ -181,7 +181,9 @@
               {% endfor %}
               </tbody>
             </table>
+            <a href="{% url 'exam_result' %}" class="btn btn-info">Show all</a> 
         </div>
+        {% endif %}
 
 {% endblock %}
 <!-- end user_stats.html -->

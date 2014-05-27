@@ -374,7 +374,7 @@ def user_profile(request, user, **kwargs):
     "user_tags" : user_tags[:50],
     "awards": awards,
     "total_awards" : len(awards),
-    "scores": Score.objects.filter(user=user),
+    "scores": Score.objects.filter(user=user).order_by("-started_time")[:2],
     })
     
 @user_view('users/recent.html', 'recent', _('recent activity'), _('recent user activity'))
