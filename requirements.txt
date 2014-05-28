@@ -1,8 +1,8 @@
 django
 markdown
 html5lib
-python-openid
-python-memcached
-django-debug-toolbar
-django-endless-pagination
-south
+#python-openid
+#python-memcached
+#django-debug-toolbar
+#django-endless-pagination
+#south
