@@ -70,7 +70,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 APP_URL = 'http://localhost:8000'
 
 #LOCALIZATIONS
-TIME_ZONE = 'America/New_York'
+TIME_ZONE = 'Asia/Calcutta'
 
 #OTHER SETTINGS
 

@@ -17,7 +17,7 @@
     <p class="message">{% blocktrans %}You currently have no external authentication provider associated with your account.{% endblocktrans %}</p>
 {% endif %}
 {% ifequal view_user request.user %}
-    <input type="button" class="submit" value="{% trans "Add new provider" %}" onclick="window.location='{% url "user_add_external_provider" %}'" />
+    <input type="button" class="btn btn-primary submit" value="{% trans "Add new provider" %}" onclick="window.location='{% url "user_add_external_provider" %}'" />
 {% endifequal %}
 {% if allow_local_auth %}
 {% if has_password %}
@@ -31,7 +31,7 @@
         <ul id="changepw-form" class="form-horizontal-rows">
         {{form.as_ul}}
         </ul>
-        <div class="submit-row"><input type="submit" class="submit" value="{% if has_password %}{% trans "Change password" %}{% endif %}{% if not has_password %}{% trans "Create password" %}{% endif %}" /></div>
+        <div class="submit-row"><input type="submit" class="btn btn-primary submit" value="{% if has_password %}{% trans "Change password" %}{% endif %}{% if not has_password %}{% trans "Create password" %}{% endif %}" /></div>
 	</form>
 	</div>
 {% endif %}

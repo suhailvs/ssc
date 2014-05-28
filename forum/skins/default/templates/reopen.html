@@ -26,8 +26,8 @@
     <form id="fmclose" action="{% url "reopen" question.id %}" method="post">
         {% csrf_token %}
         <div id="" style="padding:20px 0 20px 0">
-            <input type="submit" value="{% trans "Reopen this question" %}" class="submit" />
-            <input id="btBack" type="button" value="{% trans "Cancel" %}"  class="submit"  />
+            <input type="submit" value="{% trans "Reopen this question" %}" class="btn btn-primary submit" />
+            <input id="btBack" type="button" value="{% trans "Cancel" %}"  class="btn btn-primary submit"  />
         </div>
     </form>
 </div>

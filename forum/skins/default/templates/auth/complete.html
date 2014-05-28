@@ -82,7 +82,7 @@
                 {{ form1.recaptcha }}
                 </div>
             {% endif %}
-            <div class="submit-row"><input type="submit" class="submit" name="bnewaccount" id="bnewaccount" value="{% trans "create account" %}"/></div>
+            <div class="submit-row"><input type="submit" class="btn btn-primary submit" name="bnewaccount" id="bnewaccount" value="{% trans "create account" %}"/></div>
 		</form>
 	</div>
     {% comment %}<!-- this form associates openID with an existing password-protected account, not yet functional -->
@@ -98,7 +98,7 @@
                 <p><span class='big strong'>(Optional) receive updates by email</span> - only sent when there are any.</p>
 				<!--todo double check translation from chinese 确认 = "Register" -->
 				<div class="submit-row">
-					<input type="submit" class="submit" name="bverify" value="{% trans "Register" %}"/> 
+					<input type="submit" class="btn btn-primary submit" name="bverify" value="{% trans "Register" %}"/> 
 					<a href="{% url "user_sendpw" %}">{% trans "Forgot your password?" %}</a>
 				</div>
 			</fieldset>

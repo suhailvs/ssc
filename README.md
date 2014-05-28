@@ -19,3 +19,12 @@ My SQL Credentials:
 + **Database Name:** ssc
 + **HOST:** os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
 + **PORT:** os.environ.get('OPENSHIFT_MYSQL_DB_PORT')
+
+GMail Mail serversettings:
+--------------------------
+
++ **Server:** smtp.gmail.com
++ **User:** suhailvs@gmail.com
++ **Password:** pnaoeogqwtqlgusd
++ **Port:** 587
++ **Use TLS:** True
