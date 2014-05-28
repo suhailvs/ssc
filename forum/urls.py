@@ -17,7 +17,9 @@ sitemaps = {
 }
 
 APP_PATH = os.path.dirname(__file__)
-
+if 'OPENSHIFT_DATA_DIR' in os.environ:
+    #IF RHC
+    APP_PATH = os.environ.get('OPENSHIFT_DATA_DIR', '')
 # Choose the user urls pattern
 if bool(settings.INCLUDE_ID_IN_USER_URLS.value):
     core_user_urls_prefix = r'^%s(?P<id>\d+)/(?P<slug>.*)'
