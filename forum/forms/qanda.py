@@ -174,13 +174,16 @@ class FeedbackForm(forms.Form):
 
 class AskForm(forms.Form):
     title  = TitleField()
-    text   = QuestionEditorField()
+    text   = QuestionEditorField()    
+    def clean_tags(self):
+        tags=[tag.name for tag in self.cleaned_data['tags']]        
+        return ' '.join(tags)
 
     def __init__(self, data=None, user=None, *args, **kwargs):
         super(AskForm, self).__init__(data, *args, **kwargs)
 
-        self.fields['tags']   = TagNamesField(user)
-        
+        #self.fields['tags']   = TagNamesField(user)
+        self.fields['tags'] =  forms.ModelMultipleChoiceField(queryset=Tag.active.all())
         if not user.is_authenticated() or (int(user.reputation) < settings.CAPTCHA_IF_REP_LESS_THAN and not (user.is_superuser or user.is_staff)):
             spam_fields = call_all_handlers('create_anti_spam_field')
             if spam_fields:
