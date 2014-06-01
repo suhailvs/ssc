@@ -1,0 +1,197 @@
+{% extends 'exam/exam_base.html' %}
+{% load q_extras extra_tags %}
+{% block extrahead %}
+<link href="{% media "/media/timecirlces/TimeCircles.css" %}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	body{ background: #95A5A6}
+	/* style related to markdown preview */            
+    blockquote {
+        margin: 20px 0;
+        padding: 20px;
+        border-left: 3px solid #f0ad4e;
+        background-color: #fcf8f2;                
+    }
+    blockquote > p {
+        font-size: 1.2em;
+    }    
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">        
+        <div class="col-xs-6">
+          <h4>Tag :<span class="label label-default" id="cur_tag">{{tag}}</span>
+          Question: 
+          	<span class="label label-default">
+          		<span id="question-no"></span>/
+				<span class="nquests">{{ min_left }}</span>
+			</span>
+		  </h4>
+        </div>
+        <div class="col-xs-6">
+        	<a href="{% url 'index' %}" class="btn btn-inverse"><span class="fui-cross"></span> Home</a>
+          	<a href="javascript:void(0)" id="btn-submit" class="btn btn-danger"><span class="fui-check"></span> Submit Answers</a>
+        </div>
+        
+     </div>
+	<div class="row">
+        <div class="col-xs-9">            
+            <div class="well" style="background:#fff">
+            	<div class="btn-group" id="optgroup" style="padding-bottom:20px;"> 
+                	{% for i in 'ABCD' %}
+					 <a class="btn btn-primary" id="choice{{forloop.counter}}" data-opt="{{forloop.counter}}" href="javascript:void(0)">
+					 <!-- please vist http://stackoverflow.com/questions/134845 for more about void(0)
+					 -->
+					 	<span class="fui-checkbox-unchecked"></span> {{i}}</a>
+					{% endfor %}					 
+				</div>				
+                <div id="questionbox"></div>                
+            </div>
+        </div>
+        <div class="col-xs-3">  
+        	<div class="well"> 
+	        	<div class="btn-group" style="padding-bottom:10px">
+	        		<a class="btn btn-inverse previous btn-nextprev" href="javascript:void(0)"><span class="fui-arrow-left"></span><span> Previous</span></a>
+	        		<a class="btn btn-inverse next btn-nextprev" href="javascript:void(0)"><span>Next </span><span class="fui-arrow-right"></span></a>									 
+				</div>      	
+        	{% buttons_tag min_left questions %}        	
+        	</div>
+        	<h5><span class="label label-default">Time Left</span></h5>
+        	<div id="CountDownTimer" style="height:200px" data-timer="{% widthratio min_left 1 60 %}"></div>
+        </div>        
+    </div>
+
+    <div class="pagination">
+    	<ul>
+    	{% for i in colors %}
+    		<li><a href="javascript:void(0)" data-bg="{{i}}">{{forloop.counter}}</a></li>
+    	{% endfor %}
+    	</ul>
+	</div>
+</div>
+
+{% endblock %}
+{% block javascript %}
+
+<script src="{% media "/media/timecirlces/TimeCircles.js" %}"></script>
+<!-- MathJar CDN(please visit: jsfiddle.net/sgJ59) -->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+
+function set_opt(opt_selected){
+	//uncheck all radio buttons
+	$('#optgroup a').removeClass('active');
+	$('#optgroup a span').removeClass('fui-checkbox-checked').addClass('fui-checkbox-unchecked');
+	
+	if (opt_selected){
+		//check the radio button
+		$('#optgroup #choice'+opt_selected).addClass('active');
+		$('#optgroup #choice'+opt_selected).children('span')
+			.removeClass('fui-checkbox-unchecked').addClass('fui-checkbox-checked');
+	}
+}
+
+//Save the answer temporarily, then show New Question
+function setQnQuestChoice(qn){		
+	var $curquest=$("#btn-nav"+qn);	
+	$(".btnnav").removeClass('btn-primary'); //remove btn-primary from all nav buttons
+	$curquest.removeClass('btn-success');
+	$curquest.addClass('btn-primary');//add btn-primary to current button
+
+	//if not first question save previous question's answer temporarly
+	var prev_quest = $('#question-no').text();
+	if (prev_quest != ''){
+		var str_optSel=$('#optgroup a.active').data('opt');
+		//alert('selected option: '+str_optSel+'--- Question'+prev_quest);
+		if (str_optSel!== undefined){
+			//save choice in the button
+			$("#btn-nav"+prev_quest).data("opt",str_optSel);		
+			$("#btn-nav"+prev_quest).addClass('btn-success');
+		}		
+	}
+	var ajaxdata={qpk:$curquest.data("qpk")};
+	$.ajax({
+		//myquiz.views.get_choice_question
+		url:'{% url "get_question" %}',
+		data:ajaxdata,
+		success:function(data){
+			//change question number,question
+			$('#question-no').text(qn);
+			$('#questionbox').html(data.question);
+
+			//get the temporary saved answer 
+			//for no option selected, data-opt = 0. see q_extras.py for more
+			set_opt($("#btn-nav"+qn).data("opt"));	
+			MathJax.Hub.Typeset();		
+		}
+	});	
+}
+
+// SUBMIT ANSWERS BUTTON CLICK
+// save the answers permanantley
+//===============================================
+function SubmitQuiz(){
+	//set last time selected question in the btn-nav	
+	var curquest=$("#question-no").text();
+	var curopt=$('#optgroup a.active').data('opt');
+	$("#btn-nav"+curquest).data("opt",curopt);
+
+	var quests=new Object;
+	var tag= $("#cur_tag").text();
+	$(".btnnav").each(function() {		
+		quests[$(this).data('qpk')]=$(this).data('opt');		
+	});
+	$.ajax({
+		url:'{% url "submit_exam" %}',
+		data:{
+			questions:JSON.stringify(quests),
+			tag:$("#cur_tag").text(),
+			total_questions: $('.nquests').text()
+			}
+		}).done(function(d) {
+		document.location.assign('{% url "exam_result" %}');		
+	});//end of ajax
+}
+
+$("#optgroup a").click(function(){
+	set_opt($(this).data('opt'));
+});
+
+$(".btnnav").click(function(){	
+	//skip if same question	
+	if ($('#question-no').text() != $(this).text())
+		setQnQuestChoice($(this).text());	
+});
+
+$(".btn-nextprev").click(function() {
+	var curqn = $('#question-no').text();
+	if ($(this).hasClass('previous')){
+		if (curqn == 1) curqn = $('.nquests').text();
+		else curqn--;
+	}else if ($(this).hasClass('next')){
+		//if previous question is last, then curqn = first quest.		
+		if (curqn == $('.nquests').text()) curqn=1;
+		else curqn++;
+	}
+	setQnQuestChoice(curqn);	
+});
+
+$('.pagination a').click(function () {
+    $('body').css('background-color', $(this).data('bg'));
+});
+
+$("#btn-submit").click(function(){	
+	SubmitQuiz();
+})
+$(document).ready(function(){	
+	setQnQuestChoice(1);
+	$("#CountDownTimer").TimeCircles({ 
+		time: { Days: { show: false }, Hours: { show: false } },
+		count_past_zero: false
+	}).addListener(function(unit,value,total) { 
+        if (total == 0){SubmitQuiz()}
+    });
+	MathJax.Hub.Configured();
+});
+</script>
+{% endblock %}

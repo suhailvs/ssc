@@ -1,0 +1,18 @@
+{% load extra_tags %}
+<html>
+<head>
+<link href="{% media  "/media/bootstrap/css/bootstrap.css" %}" rel="stylesheet" type="text/css" /><!--lumen,bootstrap,readable,ubuntu,simplex-->
+<link href="{% media  "/media/flatui/css/flat-ui.css" %}" rel="stylesheet" type="text/css" />
+{% block extrahead %}
+{% endblock %}
+
+</head>
+<body>
+{% block content %}
+{% endblock %}
+
+<script src="{% media "/media/bootstrap/js/jquery.min.js" %}"></script>
+{% block javascript %}
+{% endblock %}
+</body>
+</html>

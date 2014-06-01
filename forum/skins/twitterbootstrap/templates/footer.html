@@ -1,0 +1,41 @@
+{% load extra_tags ui_registry i18n %}
+
+ <style type="text/css">
+ /* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+#footer {
+  padding-top: 20px;
+  border-top: 4px solid #e6e6e6;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #f5f5f5;
+  text-align: center;
+  color: #777;
+}
+
+.footer-links li{
+  display:inline;
+  padding: 0 2px;
+}
+</style>
+<div id="footer">
+  <div class="container">
+    <p>Designed and built by <a href="https://github.com/suhailv" target="_blank">@suhailvs</a>.</p>
+    <ul class="footer-links">
+      <li>{% loadregistry footer_links %}
+        <!--<span class="link-separator"> |</span>-->
+        <li>·</li>
+      </li><li>{% endloadregistry %}</li></ul>
+  </div>
+</div>

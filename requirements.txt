@@ -1,0 +1,9 @@
+django
+markdown
+html5lib
+mysql-python
+#python-openid
+#python-memcached
+#django-debug-toolbar
+#django-endless-pagination
+#south
