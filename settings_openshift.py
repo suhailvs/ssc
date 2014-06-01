@@ -47,8 +47,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ssc',
-        'USER': 'adminUQte5iE',
-        'PASSWORD': 'jCfBRsAW2nre',
+        'USER': 'adminK8mgpZI',
+        'PASSWORD': 'h8cWsWXAIL3S',
         'HOST': os.environ.get('OPENSHIFT_MYSQL_DB_HOST'),
         'PORT': os.environ.get('OPENSHIFT_MYSQL_DB_PORT'),
         'CONN_MAX_AGE': 600,

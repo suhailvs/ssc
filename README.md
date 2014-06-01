@@ -1,21 +1,21 @@
 Staff Selection Commission
 ==========================
 
-##  [Demo](http://ssc-picks.rhcloud.com)
+##  [Demo](http://ssc-suhailvs.rhcloud.com)
 
 Openshift Credentials:
 ----------------------
 
-+ **User Id:** suhfiles@gmail.com
++ **User Id:** suhailvs@gmail.com
 + **git clone url:** ssh://537ed1c5e0b8cdb41100008c@ssc-picks.rhcloud.com/~/git/ssc.git/
-+ [Github repo](https://github.com/suhailv/keralaentrance/tree/bootstrap)
++ [Github repo](https://github.com/suhailvs/ssc)
 
 
 My SQL Credentials:
 -------------------
 
-+ **Root User:** adminUQte5iE
-+ **Root Password:** jCfBRsAW2nre
++ **Root User:** adminK8mgpZI
++ **Root Password:** h8cWsWXAIL3S
 + **Database Name:** ssc
 + **HOST:** os.environ.get('OPENSHIFT_MYSQL_DB_HOST')
 + **PORT:** os.environ.get('OPENSHIFT_MYSQL_DB_PORT')
